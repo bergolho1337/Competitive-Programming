@@ -14,7 +14,7 @@ int main () {
             papers.push_back(C);    
         }
         
-        // Solve problem :> O(n)
+        // Solve problem :> O(n*logn)
         // Solution uses a minHeap
         int h_index = 0;
         std::vector<int> ans;
