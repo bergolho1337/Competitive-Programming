@@ -143,8 +143,10 @@ bool check_palindrome (SinglyLinkedList *l) {
 	SLLNode *head = l->getHead();
 	SLLNode *rhead = rl->getHead();
 	while (head != nullptr && rhead != nullptr) {
-		if (head->getData() != rhead->getData())
+		if (head->getData() != rhead->getData()) {
+			delete rl;
 			return false;
+		}
 		head = head->getNext();
 		rhead = rhead->getNext();
 	}
