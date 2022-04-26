@@ -1,3 +1,8 @@
+/*
+ * Chapter 3: Stacks and Queues
+ *	Describe how you could use a single array to implement three stacks.
+*/
+
 #include <bits/stdc++.h>
 
 using namespace std;

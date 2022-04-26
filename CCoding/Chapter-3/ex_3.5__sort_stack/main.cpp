@@ -1,10 +1,3 @@
-/*
- * Chapter 3: Stacks and Queues
- *	How would you design a stack which, in addition to push and pop, has a
- * function min which returns the minimum element? Push, pop and min should 
- * all operate in O(1) time.
-*/
-
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -45,14 +38,12 @@ class Stack {
 private:
     uint32_t num_nodes;
     SNode<T> *top;
-    SNode<T> *minNode;
 public:
     Stack ();
     ~Stack ();
     inline uint32_t getNumNodes () { return this->num_nodes; }
     void push (const T &value);
     SNode<T>* peek ();
-    SNode<T>* min ();
     T pop ();
     bool isEmpty ();
 };
@@ -61,7 +52,6 @@ template<class T>
 Stack<T>::Stack () {
     this->num_nodes = 0;
     this->top = nullptr;
-    this->minNode = nullptr;
 }
 
 template<class T>
@@ -74,17 +64,24 @@ template<class T>
 void Stack<T>::push (const T &value) {
     uint32_t num_nodes = this->num_nodes;
     SNode<T> *n = new SNode<T>(num_nodes,value);
-
     if (isEmpty()) {
         this->top = n;
-        this->minNode = n;
     }
     else {
+        Stack<T> *tmp = new Stack<T>();
+        while (!this->isEmpty() && value > this->top->getValue()) {
+            T top_value = this->top->getValue();
+            tmp->push(top_value);
+            this->pop();
+        }
         n->setNext(this->top);
         this->top = n;
-        if (value < this->minNode->getValue()) {
-            this->minNode = n;
+        while (!tmp->isEmpty()) {
+            T top_value = tmp->peek()->getValue();
+            this->push(top_value);
+            tmp->pop();
         }
+        delete tmp;
     }
     this->num_nodes++;
 }
@@ -92,11 +89,6 @@ void Stack<T>::push (const T &value) {
 template<class T>
 SNode<T>* Stack<T>::peek () {
     return this->top;
-}
-
-template<class T>
-SNode<T>* Stack<T>::min () {
-    return this->minNode;
 }
 
 template<class T>
@@ -111,15 +103,6 @@ T Stack<T>::pop () {
         this->top = tmp->getNext();
         delete tmp;
         this->num_nodes--;
-
-        this->minNode = this->top;
-        tmp = this->top;
-        while (tmp != nullptr) {
-            if (tmp->getValue() < this->minNode->getValue()) {
-                this->minNode = tmp;
-            }
-            tmp = tmp->getNext();
-        }
         return value;
     }
 }
@@ -131,23 +114,16 @@ bool Stack<T>::isEmpty () {
 
 int main () {
     Stack<int> *s1 = new Stack<int>();
-    s1->push(19);
-    s1->push(12);
-    s1->push(13);
-    s1->push(11);
-    s1->push(20);
-    s1->push(14);
-
-    printf("Top value in stack: %d\n",s1->peek()->getValue());
-    printf("Minimum value in stack: %d\n",s1->min()->getValue());
-
-    s1->pop();
-    s1->pop();
-    s1->pop();
-
-    printf("Top value in stack: %d\n",s1->peek()->getValue());
-    printf("Minimum value in stack: %d\n",s1->min()->getValue());
-
+    s1->push(9);
+    s1->push(5);
+    s1->push(4);
+    s1->push(1);
+    s1->push(6);
+    while (!s1->isEmpty()) {
+        int value = s1->peek()->getValue();
+        printf("%d\n",value);
+        s1->pop();
+    }
     delete s1;
-    return 0;
+    return 0; 
 }
