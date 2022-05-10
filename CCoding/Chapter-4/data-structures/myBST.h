@@ -39,13 +39,12 @@ public:
 template<class T>
 class BST {
 
-private:
+public:
     uint32_t num_nodes;
     BSTNode<T> *root;
 public:
     BST ();
     ~BST ();
-    inline uint32_t getNumNodes () { return this->num_nodes; }
     void insert (const T &value);
     BSTNode<T>* search (const T &value);
     void remove (const T &value);
